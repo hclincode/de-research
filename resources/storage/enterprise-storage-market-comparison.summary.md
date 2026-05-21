@@ -2,6 +2,8 @@
 source: https://blocksandfiles.com/2025/02/02/ai-storage/ + https://www.hpcwire.com/2025/10/16/future-of-storage-hpc-and-ai-storage-by-the-numbers/ + https://www.trustradius.com/compare-products/dell-powerscale-vs-ibm-storage-scale
 component: storage
 type: article
+evidence-tier: independent
+accessible: true
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

@@ -13,6 +13,20 @@ Weka (weka.io) markets its NeuralMesh parallel filesystem as a high-performance 
 
 ---
 
+## Evidence Quality
+
+| Source | Type | Tier | Accessible |
+|---|---|---|---|
+| Weka TPC-DS Performance Brief | pdf | vendor | No (gated) |
+| Weka NeuralMesh Architecture Blog | article | vendor | Yes |
+| Apache Spark Hardware Provisioning Docs | article | official | Yes |
+| Ceph vs VAST vs Weka Comparison | article | independent | Yes |
+| Enterprise Storage Market Landscape | article | independent | Yes |
+
+**Gaps**: The primary evidence for Weka's Spark performance (TPC-DS brief) was inaccessible. No independent reproduction of that benchmark was found. Gartner reviews behind auth walls could not be read directly. Vendor-side evidence dominates Weka-specific claims; treat those findings as directional, not authoritative.
+
+---
+
 ## Components
 
 ### `spark`

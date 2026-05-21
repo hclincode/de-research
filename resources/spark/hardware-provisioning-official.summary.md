@@ -2,6 +2,8 @@
 source: https://spark.apache.org/docs/latest/hardware-provisioning.html
 component: spark
 type: article
+evidence-tier: official
+accessible: true
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

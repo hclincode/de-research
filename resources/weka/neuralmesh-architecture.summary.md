@@ -2,6 +2,8 @@
 source: https://www.weka.io/blog/distributed-file-systems/neuralmesh-doesnt-just-save-space-it-maximizes-efficiency/
 component: weka
 type: article
+evidence-tier: vendor
+accessible: true
 date-retrieved: 2026-05-21
 security:
   malicious-code: none
