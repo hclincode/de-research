@@ -33,10 +33,23 @@ Follow these phases in order. Do not fetch or write files until Phase 3.
 ### Phase 1 — Scope and disambiguate
 
 1. **Identify all components** in the topic.
-2. **Disambiguate names** that could match multiple products.
+2. **Disambiguate names** that could match multiple products. After finding sources, verify they are about the right product before using them.
 3. **Classify each provided source** using the five evidence tiers (see below).
 4. **List expected conclusions.** You will search against these in Phase 2.
 5. **Apply constraint filters.** Eliminate non-qualifying candidates immediately and document why.
+
+### Phase 1.5 — Clarifying questions (5-minute timeout)
+
+After scoping, identify questions whose answers would materially change the research direction. Ask at most **3–5 questions**. Do not ask about anything already in the request.
+
+High-value question categories: scope layer (storage service vs table format vs full stack), deployment context (greenfield vs migration), workload profile (batch / streaming / interactive), performance priority, existing constraints.
+
+**Procedure:**
+1. State each question as plain text with an explicit default, e.g. _"Q: Which layer? Default if no reply: full stack."_
+2. Wait approximately 2 minutes. If the user replies, use their answers. If not, proceed with the stated defaults.
+3. Document any defaults used in the report's Evidence Quality section under "User-default assumptions."
+
+**Skip Phase 1.5** if the request already specifies scope layer, deployment context, and workload profile.
 
 ### Phase 2 — Plan and collect in parallel
 
@@ -50,6 +63,12 @@ Four search angles, fired simultaneously:
 Source priority: official → analyst → press → vendor-adjacent → vendor.
 For every vendor/vendor-adjacent source, find at least one independent corroboration.
 
+**Source balance check** (before Phase 3): For the primary recommendation, confirm at least 2 non-vendor sources are planned. If not, add a targeted search.
+
+**Staleness gap rule**: If the only benchmark for a key claim is >2 years old, run one targeted recency search before Phase 3. Document whether recent data was found.
+
+**Scope lock** (write before Phase 3): One sentence — what this research covers and does not cover. Use the Phase 1.5 answer if provided; otherwise derive from the request.
+
 ### Phase 3 — Content retrieval
 
 - Fetch in parallel.
@@ -62,6 +81,13 @@ For every vendor/vendor-adjacent source, find at least one independent corrobora
 One `.summary.md` per URL immediately after retrieval.
 
 ### Phase 5 — Write the topic report
+
+**Pre-write checklist:**
+- [ ] At least 1 official or press source for each recommended component.
+- [ ] Every eliminated option has a sourced reason.
+- [ ] All LOW-confidence findings call out what would raise confidence.
+- [ ] Stale benchmarks (>2 years) are flagged with a note that no recent data was found.
+- [ ] Phase 1.5 defaults (if used) documented in Evidence Quality.
 
 - Verdict in **Overview**.
 - Each finding: **inline citations** + **confidence level** (HIGH / MEDIUM / LOW).

@@ -36,10 +36,29 @@ Follow these phases in order. Do not fetch or write files until Phase 3.
 Before any searches or fetches:
 
 1. **Identify all components** in the topic. Create a working list.
-2. **Disambiguate names.** If a name matches multiple products, resolve with a targeted search first.
+2. **Disambiguate names.** If a name matches multiple products, resolve with a targeted search first. After finding sources, verify they are actually about the right product (e.g. "Weka" is both a Java ML toolkit and a storage vendor — confirm before using).
 3. **Classify each provided source** using the five evidence tiers (see below). Do this before fetching — bias is easier to spot when you know who published the source.
 4. **List expected conclusions.** Write down what answer you expect to reach. You will explicitly search against these in Phase 2.
 5. **Apply constraint filters.** If constraints exist (e.g. open-source only, on-premise only), eliminate non-qualifying candidates immediately and document why.
+
+### Phase 1.5 — Clarifying questions (5-minute timeout)
+
+After scoping, identify questions whose answers would materially change the research direction. Ask at most **3–5 questions**. Do not ask about anything already specified in the request.
+
+**High-value question categories:**
+- **Scope layer**: Which layer to focus on — storage service (Ceph, Ozone, MinIO), table format (Iceberg, Hudi, Delta), catalog, or full stack?
+- **Deployment context**: New greenfield deployment, or migrating existing infrastructure?
+- **Workload profile**: Batch-heavy, CDC/streaming, interactive analytics, or mixed?
+- **Performance priority**: Throughput, latency, storage-cost efficiency, or operational simplicity?
+- **Existing constraints**: Components already mandated, ruled out, or already deployed?
+
+**Procedure (Claude Code):**
+1. State each question as plain text with an explicit default: e.g. _"Q: Which layer should this cover? Default if no reply: full stack."_
+2. In the same response, call `ScheduleWakeup(300s)` with the prompt: `"Clarifying questions were asked. Proceed with stated defaults: [list each default]."` This fires in 5 minutes if the user does not respond.
+3. If the user replies before the wakeup fires: use their answers. When the wakeup fires, check the conversation — if the user responded, proceed with their answers; otherwise proceed with the defaults.
+4. If no user response by wakeup: proceed with the stated defaults and document them in the report's Evidence Quality section under "User-default assumptions."
+
+**Skip Phase 1.5** if the request already specifies all three: scope layer, deployment context, and workload profile.
 
 ### Phase 2 — Plan and collect in parallel
 
@@ -60,6 +79,12 @@ Source priority:
 
 For every vendor or vendor-adjacent source, find at least one independent or official source covering the same claim before treating the claim as established.
 
+**Source balance check** (mandatory before moving to Phase 3): For the primary recommendation, confirm at least 2 non-vendor/non-vendor-adjacent sources are in your plan. If not, add a targeted search for independent coverage of that claim before proceeding.
+
+**Staleness gap rule**: If the only benchmark found for a key performance claim is >2 years old, run one additional search — `"[component] benchmark [current year]"` or `"[component] performance [current year-1]"` — before Phase 3. Document whether recent data was found or not.
+
+**Scope lock** (write before Phase 3): State in one sentence what this research covers and what it does not. Example: _"This research covers physical storage services (Ozone, Ceph, HDFS) and does not cover table formats or catalogs."_ Use the user's Phase 1.5 answer if provided; otherwise derive from the request. This prevents scope drift during retrieval.
+
 ### Phase 3 — Content retrieval
 
 - Fetch resources in parallel.
@@ -72,6 +97,13 @@ For every vendor or vendor-adjacent source, find at least one independent or off
 One `.summary.md` per URL, immediately after retrieval. See template below.
 
 ### Phase 5 — Write the topic report
+
+**Pre-write checklist** (verify before writing the report):
+- [ ] At least 1 official or press source exists for each recommended component.
+- [ ] Every eliminated option has a stated reason backed by at least one source.
+- [ ] All LOW-confidence findings call out the gap and note what would be needed to raise confidence.
+- [ ] Any benchmark cited is either ≤2 years old, or is explicitly flagged as stale with a note that no recent data was found.
+- [ ] If Phase 1.5 defaults were used (no user response), document them in Evidence Quality under "User-default assumptions."
 
 Synthesize across summaries. Rules:
 - Verdict must appear in **Overview**, not buried in Findings.
@@ -144,6 +176,9 @@ components: [component-a, component-b]
 constraints:                        ← list hard constraints that eliminate candidates
   - open-source: true
   - deployment: on-premise
+clarification-defaults:             ← omit if user answered Phase 1.5 questions; include if defaults were used
+  scope-layer: full stack           ← example default
+  deployment-context: greenfield    ← example default
 ---
 
 ## Overview
