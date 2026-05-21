@@ -2,8 +2,9 @@
 source: https://www.whitefiber.com/blog/ai-storage-ceph-vast-weka
 component: storage
 type: article
-evidence-tier: independent
+evidence-tier: press
 accessible: true
+benchmark-age: n/a
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

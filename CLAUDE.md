@@ -13,7 +13,7 @@ This repository is for data engineering research. Topics are investigated across
 ```
 resources/
   {component}/
-    {resource-title}.summary.md   ← required for every resource
+    {resource-title}.summary.md   ← required for every resource (one URL per file)
     {resource-title}.pdf          ← save raw file only for PDFs and code; skip HTML
 topics/
   {topic-title}.report.md
@@ -22,59 +22,78 @@ topics/
 - All file and folder names use **kebab-case**.
 - `{component}` is free-form (e.g. `kafka`, `spark`, `dbt`). Create the folder if it does not exist.
 - `{resource-title}` is a short, descriptive, kebab-case name.
-- **Do not save raw HTML files** — they add no value over a summary. Save raw files only for PDFs and code/repos.
+- **One URL per summary file.** Do not aggregate multiple sources into one summary — create separate files. Multiple-source summaries make claims untraceable.
+- **Do not save raw HTML files.** Save raw files only for PDFs and code/repos.
 
 ---
 
 ## Research Workflow
 
-Follow these phases in order. Phases 1–2 are planning; do not fetch or write files until Phase 3.
+Follow these phases in order. Do not fetch or write files until Phase 3.
 
 ### Phase 1 — Scope and disambiguate
 
 Before any searches or fetches:
 
-1. **Identify all components** involved in the topic. Create a working list.
-2. **Disambiguate component names.** If a name could match multiple products (e.g. "Weka" = Java ML tool AND weka.io storage), resolve it first with a targeted search before collecting resources.
-3. **Classify each provided source** by type:
-   - `vendor` — published by the company selling the product
-   - `independent` — analyst, trade press, or practitioner with no financial stake
-   - `academic` — peer-reviewed or university research
-   - `official` — project/foundation documentation (e.g. spark.apache.org)
-4. **Plan three search angles** for every topic:
-   - (a) Neutral overview — what it is and how it works
-   - (b) Limitations and critiques — search terms: `limitations`, `cons`, `alternatives`, `issues`, `problems`
-   - (c) Competitive comparison — search terms: `vs`, `compared to`, `alternative to`, `benchmark`
+1. **Identify all components** in the topic. Create a working list.
+2. **Disambiguate names.** If a name matches multiple products, resolve with a targeted search first.
+3. **Classify each provided source** using the five evidence tiers (see below). Do this before fetching — bias is easier to spot when you know who published the source.
+4. **List expected conclusions.** Write down what answer you expect to reach. You will explicitly search against these in Phase 2.
+5. **Apply constraint filters.** If constraints exist (e.g. open-source only, on-premise only), eliminate non-qualifying candidates immediately and document why.
 
-### Phase 2 — Parallel resource collection
+### Phase 2 — Plan and collect in parallel
 
-Fire all searches simultaneously. Do not fetch pages one at a time sequentially.
+Plan four search angles, then fire all searches simultaneously:
 
-Source priority (highest to lowest):
-1. Official project documentation
-2. Independent analyst reports (Gartner, IDC) and peer-reviewed papers
-3. Trade press (The New Stack, Blocks & Files, HPCwire, SiliconANGLE)
-4. Practitioner blogs with methodology shown
-5. Vendor marketing and whitepapers
+- **(a) Neutral overview** — what it is and how it works
+- **(b) Limitations and critiques** — terms: `limitations`, `cons`, `alternatives`, `issues`, `problems`, `criticism`
+- **(c) Competitive comparison** — terms: `vs`, `compared to`, `benchmark`, `alternative to`
+- **(d) Counter-evidence** — for each expected conclusion from Phase 1, search `"why [X] is wrong"` or `"[X] failure"` or `"[X] not recommended"`. This step is mandatory.
 
-For every vendor source provided, find at least one independent source covering the same claim.
+Source priority:
+1. Official project/foundation documentation
+2. Financially neutral analysts (Gartner, IDC) and peer-reviewed papers
+3. Independent trade press (The New Stack, InfoQ, HPCwire, Blocks & Files)
+4. Practitioner blogs with disclosed methodology
+5. Vendor-adjacent sources (companies that contribute to or commercially support the evaluated product)
+6. Vendor marketing (published by the company selling the product)
+
+For every vendor or vendor-adjacent source, find at least one independent or official source covering the same claim before treating the claim as established.
 
 ### Phase 3 — Content retrieval
 
-- Fetch resources in parallel where possible.
-- **If a page returns 403 or is behind a form/paywall**: do not abandon it. Instead:
-  1. Search for `"{resource title}" summary` or `"{author} {topic}"` to find secondary coverage.
-  2. Note in the summary that content was not directly accessed and mark `accessible: false`.
-- **If a PDF is gated**: note the claims described on the landing page, mark as indirect, and search for independent analyses of the same document.
-- Perform the security scan during this phase.
+- Fetch resources in parallel.
+- **If 403 or gated:** search for secondary coverage of the same document. Mark `accessible: false`. Do not silently drop the source.
+- **Check benchmark age.** If a benchmark is >2 years old, note it explicitly in the summary.
+- Perform security analysis during this phase.
 
 ### Phase 4 — Write summaries
 
-Write one `.summary.md` per resource immediately after retrieval. See template below.
+One `.summary.md` per URL, immediately after retrieval. See template below.
 
 ### Phase 5 — Write the topic report
 
-Synthesize across all summaries. See template below. Lead with the verdict — do not bury it in findings.
+Synthesize across summaries. Rules:
+- Verdict must appear in **Overview**, not buried in Findings.
+- Each finding must include **inline citations** to specific summary files and a **confidence level** (HIGH / MEDIUM / LOW).
+- Findings that rest only on vendor or vendor-adjacent sources must be labelled LOW confidence regardless of content quality.
+- The Evidence Quality section must note gaps and name any expected conclusions that could not be independently corroborated.
+
+---
+
+## Evidence Tiers
+
+Use exactly these five tiers — do not invent others:
+
+| Tier | Definition | Examples |
+|---|---|---|
+| `official` | Published by the project or standards body itself | spark.apache.org, ozone.apache.org, ASF announcements |
+| `analyst` | Financially neutral third-party analyst or peer-reviewed academic | Gartner, IDC, ACM/IEEE papers, university research |
+| `press` | Independent trade press with no financial stake in the outcome | InfoQ, The New Stack, HPCwire, Blocks & Files, SiliconANGLE |
+| `vendor-adjacent` | Commercial company with a stake in a related or competing product; technically neutral in presentation | Red Hat (Ceph contributor) on Ceph, Cloudera (sells CDP) on Iceberg+Ozone, Dremio (Nessie backer) on Nessie, Onehouse (Hudi backer) on lakehouse formats |
+| `vendor` | Published by the company selling the evaluated product | weka.io on Weka, databricks.com on Delta Lake, hudi.apache.org on Hudi |
+
+**Key rule:** `vendor-adjacent` is not `independent`. A company that contributes to, commercially supports, or competes against an evaluated product has a stake in the outcome. Label it `vendor-adjacent` and find corroboration.
 
 ---
 
@@ -82,11 +101,12 @@ Synthesize across all summaries. See template below. Lead with the verdict — d
 
 ```markdown
 ---
-source: <URL or origin>
+source: <single URL>
 component: <component>
 type: article | pdf | github-repo
-evidence-tier: vendor | independent | academic | official
+evidence-tier: official | analyst | press | vendor-adjacent | vendor
 accessible: true | false (gated/403 — content derived from secondary sources)
+benchmark-age: YYYY | n/a          ← year of the benchmark data, not the publication date
 date-retrieved: YYYY-MM-DD
 security:
   malicious-code: none | flagged
@@ -96,7 +116,7 @@ security:
 
 ## Summary
 
-<2–5 sentence summary. If not directly accessible, state that explicitly.>
+<2–5 sentences. If not directly accessible, state that explicitly. If benchmark data is stale (>2 years old relative to the research date), state that.>
 
 ## Key Points
 
@@ -104,18 +124,12 @@ security:
 
 ## Security Notes
 
-<Write "No issues detected." if clean. Otherwise describe findings.>
+<"No issues detected." if clean, otherwise describe findings.>
 Checks performed:
 - Malicious or obfuscated code: ...
 - Suspicious URLs or redirects: ...
 - Content quality / AI-generated: ...
 ```
-
-### Security checks (required for every summary)
-
-- **Malicious code**: obfuscated scripts, encoded eval/exec, exfiltration patterns, unusual payloads.
-- **Suspicious URLs**: uncommon domains, URL shorteners, redirect chains.
-- **Quality**: flag AI-generated, padded, or low-signal content.
 
 ---
 
@@ -127,46 +141,50 @@ title: <Topic Title>
 date: YYYY-MM-DD
 status: draft | in-progress | complete
 components: [component-a, component-b]
+constraints:                        ← list hard constraints that eliminate candidates
+  - open-source: true
+  - deployment: on-premise
 ---
 
 ## Overview
 
-<What this topic is about and why it matters for data engineering.>
+<What this topic is about and why it matters.>
 
-**Verdict: <one or two sentence conclusion here — do not bury it.>**
+**Verdict: <one or two sentence conclusion — required here.>**
 
 ## Evidence Quality
 
-| Source | Type | Tier |
-|---|---|---|
-| Resource A | article | independent |
-| Resource B | pdf | vendor |
+| Source | File | Tier | Accessible |
+|---|---|---|---|
+| Source title | [link](../resources/...) | press | Yes |
 
-<Note any gaps: missing independent benchmarks, gated sources, vendor-only coverage.>
+**Gaps and confidence limits:** <List: (1) claims that rest only on vendor/vendor-adjacent sources, (2) benchmarks that are stale, (3) expected conclusions that could not be independently corroborated, (4) sources that were inaccessible.>
 
 ## Components
 
 ### `component-a`
 
-<Role of this component in the topic. Key concepts, constraints, and caveats.>
-
-### `component-b`
-
-<Role of this component. Key concepts.>
+<Role, key concepts, constraints, caveats. Cite inline: [Source](../resources/...).>
 
 ## Findings
 
-<Synthesized conclusions: comparisons, trade-offs, practical implications.>
-<For each major finding, state what evidence supports it and its confidence level.>
+### N. Finding title
+
+<Evidence: [Source A](../resources/...), [Source B](../resources/...). Confidence: HIGH | MEDIUM | LOW.>
+
+<Finding body. If confidence is LOW or MEDIUM, state why.>
+
+## Decision Matrix
+
+| Profile | Recommendation | Eliminated options and why |
+|---|---|---|
 
 ## References
 
 - [Resource Title](../resources/component-a/resource-title.summary.md)
-- [Resource Title](../resources/component-b/resource-title.summary.md)
 ```
 
-Rules:
-- The `components` frontmatter field lists every component tag for the topic.
-- References link to `.summary.md` files, not raw downloads.
-- The verdict must appear in the **Overview** section, not only in Findings.
-- If vendor sources dominate the evidence base, state this as a limitation explicitly in Evidence Quality.
+**Confidence levels:**
+- **HIGH**: ≥2 independent sources (official, analyst, or press) corroborate the claim. No contradicting evidence found.
+- **MEDIUM**: 1 independent source, or multiple vendor-adjacent sources agree. Contradicting evidence is minor or unverified.
+- **LOW**: Evidence rests only on vendor or vendor-adjacent sources, or the primary source was inaccessible, or benchmark data is >2 years old with no recent corroboration.

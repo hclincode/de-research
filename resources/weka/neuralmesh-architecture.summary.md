@@ -4,6 +4,7 @@ component: weka
 type: article
 evidence-tier: vendor
 accessible: true
+benchmark-age: n/a
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

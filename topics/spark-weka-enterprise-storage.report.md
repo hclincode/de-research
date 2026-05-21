@@ -17,13 +17,13 @@ Weka (weka.io) markets its NeuralMesh parallel filesystem as a high-performance 
 
 | Source | Type | Tier | Accessible |
 |---|---|---|---|
-| Weka TPC-DS Performance Brief | pdf | vendor | No (gated) |
-| Weka NeuralMesh Architecture Blog | article | vendor | Yes |
-| Apache Spark Hardware Provisioning Docs | article | official | Yes |
-| Ceph vs VAST vs Weka Comparison | article | independent | Yes |
-| Enterprise Storage Market Landscape | article | independent | Yes |
+| Weka TPC-DS Performance Brief | [link](../resources/weka/spark-tpcds-performance-brief.summary.md) | vendor | No (gated) |
+| Weka NeuralMesh Architecture Blog | [link](../resources/weka/neuralmesh-architecture.summary.md) | vendor | Yes |
+| Apache Spark Hardware Provisioning Docs | [link](../resources/spark/hardware-provisioning-official.summary.md) | official | Yes |
+| Ceph vs VAST vs Weka Comparison | [link](../resources/storage/ai-storage-ceph-vast-weka-comparison.summary.md) | press | Yes |
+| Enterprise Storage Market Landscape | [link](../resources/storage/enterprise-storage-market-comparison.summary.md) | press | Yes |
 
-**Gaps**: The primary evidence for Weka's Spark performance (TPC-DS brief) was inaccessible. No independent reproduction of that benchmark was found. Gartner reviews behind auth walls could not be read directly. Vendor-side evidence dominates Weka-specific claims; treat those findings as directional, not authoritative.
+**Gaps and confidence limits**: Primary Weka benchmark evidence (TPC-DS brief) was inaccessible — all Weka performance claims are LOW confidence. No independent benchmark reproducing Weka's Spark results was found. The Ceph performance benchmark (Red Hat, 2019) is stale — use directionally only. Weka-specific claims rest entirely on vendor sources; treat as directional.
 
 ---
 

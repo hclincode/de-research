@@ -20,13 +20,13 @@ This report re-evaluates Spark storage options under two hard constraints: **all
 
 | Source | Type | Tier | Accessible |
 |---|---|---|---|
-| Apache Ozone 2.0 ASF Announcement | article | official | Yes |
-| Red Hat: Spark on Ceph Performance (Part 3) | article | independent | Yes |
-| InfoQ: MinIO Maintenance Mode and Alternatives | article | independent | Yes |
-| Alluxio Official Spark Docs | article | official | Yes |
-| Apache Spark Hardware Provisioning (from prior research) | article | official | Yes |
+| Apache Ozone 2.0 ASF Announcement | [link](../resources/ozone/apache-ozone-2-release.summary.md) | official | Yes |
+| Red Hat: Spark on Ceph Performance (Part 3) | [link](../resources/ceph/spark-ceph-performance-analysis.summary.md) | vendor-adjacent (Red Hat = Ceph contributor), benchmark-age: 2019 | Yes |
+| InfoQ: MinIO Maintenance Mode | [link](../resources/minio/minio-maintenance-mode-risk.summary.md) | press | Yes |
+| Alluxio Official Spark Docs | [link](../resources/alluxio/alluxio-spark-integration.summary.md) | official | Yes |
+| Apache Spark Hardware Provisioning | [link](../resources/spark/hardware-provisioning-official.summary.md) | official | Yes |
 
-**Gaps**: No independent benchmark directly comparing Ozone 2.0 vs Ceph in a Spark TPC-DS workload was found. Alluxio community edition performance data for large clusters is limited. Ozone 2.0 was released August 2025 — production case studies are still emerging.
+**Gaps and confidence limits**: Ceph benchmark data is from 2019 — the ~2x slowdown figure may not reflect current NVMe-backed Ceph deployments. No independent Ozone 2.0 vs Ceph Spark benchmark was found. "Alluxio bridges the Ceph read gap" is a logical inference with no measured benchmark; treat as MEDIUM confidence. Ozone production case studies beyond Cloudera/CDP are limited.
 
 ---
 

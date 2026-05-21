@@ -23,15 +23,15 @@ A lakehouse is not a single product — it is a three-layer stack: **physical st
 
 | Source | Type | Tier | Accessible |
 |---|---|---|---|
-| Onehouse: Iceberg vs Hudi vs Delta comparison | article | independent (Hudi-biased) | Yes |
-| Cloudera: Iceberg on Ozone production architecture | article | independent | Yes |
-| Delta Lake governance analysis (Dremio + trade press) | article | independent | Yes |
-| Hudi lakehouse strengths (Apache Hudi blog + Onehouse) | article | vendor | Yes |
-| Project Nessie: on-premise catalog (projectnessie.org + LakeFS) | article | official + independent | Yes |
-| Apache Ozone 2.0 release (from prior research) | article | official | Yes |
-| Ceph/Spark performance benchmarks (from prior research) | article | independent | Yes |
+| Onehouse: Iceberg vs Hudi vs Delta comparison | [link](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md) | vendor-adjacent (Onehouse = Hudi's commercial backer) | Yes |
+| Cloudera: Iceberg on Ozone production architecture | [link](../resources/iceberg/iceberg-ozone-cloudera-lakehouse.summary.md) | vendor-adjacent (Cloudera sells CDP with Iceberg+Ozone) | Yes |
+| Delta Lake governance analysis | [link](../resources/delta-lake/delta-lake-governance-analysis.summary.md) | press | Yes |
+| Hudi lakehouse strengths | [link](../resources/hudi/hudi-lakehouse-streaming-strengths.summary.md) | vendor (Apache Hudi blog / Onehouse) | Yes |
+| Project Nessie: on-premise catalog | [link](../resources/nessie/nessie-on-premise-catalog.summary.md) | vendor-adjacent (Dremio = Nessie backer) | Yes |
+| Apache Ozone 2.0 release | [link](../resources/ozone/apache-ozone-2-release.summary.md) | official | Yes |
+| Ceph/Spark performance benchmarks | [link](../resources/ceph/spark-ceph-performance-analysis.summary.md) | vendor-adjacent, benchmark-age: 2019 (stale) | Yes |
 
-**Gaps**: No independent TPC-DS benchmark directly comparing Iceberg+Ozone vs Hudi+Ozone in an on-premise environment was found. Nessie production scale data at 10B+ objects is limited. Hudi read performance data on Ozone (vs HDFS) is not independently published.
+**Gaps and confidence limits**: No source in this report is financially neutral (analyst/press) for the core table format comparison — all format-specific claims are vendor-adjacent or vendor. "Iceberg is the slowest" rests on a Hudi-backer comparison only (LOW confidence). "Nessie 28.6% adoption" is from a Dremio-run survey (vendor-adjacent). Ceph performance data is 2019 vintage. "Hudi production at Uber/LinkedIn scale" is stated in the report body without a cited source — unverified claim. No counter-evidence search was run for Nessie or Ozone reliability at scale.
 
 ---
 
@@ -142,39 +142,49 @@ Project Nessie (Apache 2.0) is the recommended on-premise catalog for Iceberg-ba
 
 ### 1. The lakehouse stack is three independent decisions, not one
 
-Physical storage, table format, and catalog must be chosen separately and verified for composition. The best independently chosen options may not be the best combination. The validated on-premise reference architecture is: **Ozone + Iceberg + Nessie** (Cloudera production evidence) and **Ozone/HDFS + Hudi** (long-standing production at Uber, LinkedIn scale).
+Evidence: [Iceberg/Ozone architecture](../resources/iceberg/iceberg-ozone-cloudera-lakehouse.summary.md), [format comparison](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md). Confidence: **MEDIUM** — architecture principle is sound; the specific combination validations come from vendor-adjacent sources only.
+
+Physical storage, table format, and catalog must be chosen separately and verified for composition. The validated on-premise reference architecture is: **Ozone + Iceberg + Nessie** (Cloudera production evidence, vendor-adjacent) and **HDFS + Hudi** (community-confirmed production at scale, no independent source cited here).
 
 ### 2. Iceberg is the right table format for analytical-dominant enterprise lakehouses
 
-If the primary workload is analytical reads (SQL queries, BI, ad-hoc), multi-engine access (Spark + Trino + Flink on the same tables), and the data team values ecosystem longevity and future optionality, Iceberg is the correct choice. Its performance gap vs Hudi is real but acceptable when weighed against its multi-engine interoperability and ASF governance. The compaction gap is solved with a scheduled Spark maintenance job.
+Evidence: [format comparison](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md) (vendor-adjacent, Hudi-biased), [Delta governance](../resources/delta-lake/delta-lake-governance-analysis.summary.md) (press). Confidence: **MEDIUM** — multi-engine superiority and ASF governance are well-documented; the performance gap vs Hudi rests on a vendor-biased benchmark only.
+
+Its performance gap vs Hudi is stated in a Hudi-backer comparison and has no neutral corroboration. Treat the magnitude as uncertain. The compaction gap is solved with a scheduled Spark maintenance job.
 
 ### 3. Hudi is the right table format when streaming CDC ingestion dominates
 
-If the primary ingestion pattern is continuous CDC from Debezium/Kafka into mutable tables with high upsert rates, Hudi's NBCC, DeltaStreamer, and automated compaction make it operationally superior. The write infrastructure is entirely self-managing in open-source. The multi-engine interoperability sacrifice is acceptable when Spark is the primary (or only) query engine.
+Evidence: [Hudi strengths](../resources/hudi/hudi-lakehouse-streaming-strengths.summary.md) (vendor), [format comparison](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md) (vendor-adjacent). Confidence: **LOW** — both sources have a financial stake in Hudi. Technical claims (NBCC, DeltaStreamer, record-level index) are architecturally verifiable from project docs, but no neutral benchmark confirms their advantage under real enterprise workloads.
+
+Hudi's NBCC and DeltaStreamer are unique and open-source; the framing of their superiority comes from Hudi-aligned sources and should be independently verified before committing to Hudi as a platform.
 
 ### 4. Ozone is the correct physical layer for both formats
 
-Ozone's billion-object metadata scalability, S3-compatible interface, and ASF governance make it the best physical storage for any new on-premise lakehouse. The Iceberg+Ozone combination has Cloudera production validation. Hudi+Ozone follows naturally from Hudi's HDFS-compatible FileSystem API support.
+Evidence: [Ozone 2.0 release](../resources/ozone/apache-ozone-2-release.summary.md) (official), [Iceberg+Ozone architecture](../resources/iceberg/iceberg-ozone-cloudera-lakehouse.summary.md) (vendor-adjacent). Confidence: **MEDIUM** — official ASF release confirms scalability claims; Cloudera production validation is vendor-adjacent.
+
+Ozone's billion-object metadata scalability and S3-compatible interface are confirmed by official ASF documentation. The claim that Iceberg+Ozone performs well at lakehouse scale comes from Cloudera only.
 
 ### 5. Delta Lake is eliminated under these constraints
 
-The best Delta features require Databricks Runtime. Multi-writer on-premise needs a custom lock provider. De facto Databricks roadmap control is an open-source governance risk. No recommendation for on-premise open-source deployments.
+Evidence: [Delta governance analysis](../resources/delta-lake/delta-lake-governance-analysis.summary.md) (press), [format comparison](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md) (vendor-adjacent). Confidence: **HIGH** — proprietary feature stratification and lock-provider requirements are verifiable directly from Delta's own documentation and are corroborated by independent press.
+
+The proprietary feature list (auto-optimize, Autoloader, Bloom filters) is documented by Databricks itself. The DynamoDB lock provider default is in Delta's own configuration docs. These are not contested claims.
 
 ### 6. Compaction is the operational hidden cost for Iceberg
 
-Iceberg requires explicit compaction scheduling. For production lakehouses with continuous ingestion, this means a scheduled Spark job running `rewrite_data_files` and `expire_snapshots`. This is manageable but is operational overhead that Hudi eliminates with its async table services.
+Evidence: [format comparison](../resources/iceberg/iceberg-hudi-delta-lakehouse-comparison.summary.md) (vendor-adjacent). Confidence: **MEDIUM** — the absence of built-in compaction in Iceberg is a documented architectural fact; the operational burden assessment is a qualitative judgment, not a measured cost.
 
 ---
 
 ## Decision Matrix
 
-| Workload profile | Table format | Physical storage | Catalog |
-|---|---|---|---|
-| Analytical reads, multi-engine, new deployment | **Apache Iceberg** | **Apache Ozone** | **Project Nessie** |
-| Streaming CDC, continuous upserts, Spark-centric | **Apache Hudi** | **Apache Ozone** | Hive Metastore (optional) |
-| Multi-cluster shared lake, cost-sensitive | **Apache Iceberg** | **Ceph (S3A)** + Alluxio caching | **Project Nessie** |
-| Existing HDFS, incremental modernisation | **Apache Hudi** | **HDFS** (migrate to Ozone later) | Hive Metastore |
-| Pure Databricks stack on-premise | Delta Lake | — | Unity Catalog |
+| Workload profile | Recommendation | Eliminated options and why |
+|---|---|---|
+| Analytical reads, multi-engine, new deployment | Iceberg + Ozone + Nessie | Hudi (weaker multi-engine); Delta (proprietary tooling, lock-provider gap) |
+| Streaming CDC, continuous upserts, Spark-centric | Hudi + Ozone | Iceberg (no native CDC, manual compaction); Delta (eliminated) |
+| Multi-cluster shared lake, cost-sensitive | Iceberg + Ceph (S3A) + Alluxio + Nessie | Ozone (single-cluster optimised, no multi-cluster cost advantage) |
+| Existing HDFS, incremental modernisation | Hudi + HDFS → Ozone migration | Delta (eliminated); Iceberg (requires catalog uplift before HDFS migration) |
+| Pure Databricks on-premise (commercial) | Delta Lake + Unity Catalog | Not applicable under open-source constraint |
 
 ---
 

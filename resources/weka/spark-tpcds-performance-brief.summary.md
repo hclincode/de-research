@@ -4,6 +4,7 @@ component: weka
 type: article
 evidence-tier: vendor
 accessible: false (gated PDF — content derived from landing page description and secondary references)
+benchmark-age: 2026
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

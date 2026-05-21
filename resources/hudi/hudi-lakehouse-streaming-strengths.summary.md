@@ -4,6 +4,7 @@ component: hudi
 type: article
 evidence-tier: vendor
 accessible: true
+benchmark-age: 2025
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

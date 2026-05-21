@@ -2,8 +2,9 @@
 source: https://www.onehouse.ai/blog/apache-hudi-vs-delta-lake-vs-apache-iceberg-lakehouse-feature-comparison
 component: iceberg
 type: article
-evidence-tier: independent
+evidence-tier: vendor-adjacent
 accessible: true
+benchmark-age: 2025
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

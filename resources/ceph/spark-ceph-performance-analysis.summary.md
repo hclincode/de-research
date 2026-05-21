@@ -2,13 +2,14 @@
 source: https://www.redhat.com/en/blog/why-spark-ceph-part-3-3
 component: ceph
 type: article
-evidence-tier: independent
+evidence-tier: vendor-adjacent
 accessible: true
+benchmark-age: 2019
 date-retrieved: 2026-05-21
 security:
   malicious-code: none
   suspicious-urls: none
-  quality: high — vendor-neutral benchmark with disclosed methodology (Red Hat, Ceph contributor)
+  quality: low — Red Hat is a major Ceph contributor with commercial interest in Ceph adoption; benchmark data is from 2019 (stale for 2025/2026 decisions)
 ---
 
 ## Summary

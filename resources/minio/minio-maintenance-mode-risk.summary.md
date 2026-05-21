@@ -2,8 +2,9 @@
 source: https://www.infoq.com/news/2025/12/minio-s3-api-alternatives/
 component: minio
 type: article
-evidence-tier: independent
+evidence-tier: press
 accessible: true
+benchmark-age: n/a
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

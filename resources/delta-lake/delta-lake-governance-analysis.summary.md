@@ -2,8 +2,9 @@
 source: https://www.dremio.com/blog/table-format-governance-and-community-contributions-apache-iceberg-apache-hudi-and-delta-lake/ + https://sdxcentral.com + TechTarget coverage
 component: delta-lake
 type: article
-evidence-tier: independent
+evidence-tier: press
 accessible: true
+benchmark-age: n/a
 date-retrieved: 2026-05-21
 security:
   malicious-code: none

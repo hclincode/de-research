@@ -2,8 +2,9 @@
 source: https://projectnessie.org + https://lakefs.io/blog/nessie-catalog/
 component: nessie
 type: article
-evidence-tier: independent
+evidence-tier: vendor-adjacent
 accessible: true
+benchmark-age: n/a
 date-retrieved: 2026-05-21
 security:
   malicious-code: none
