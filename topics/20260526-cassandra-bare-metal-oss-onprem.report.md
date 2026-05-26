@@ -367,8 +367,8 @@ Use `performance` governor, not `schedutil`. `schedutil` scales clock speed base
 | OSS-only, on-prem, <100 nodes | **Architecture B** (Podman Quadlets + Ansible) | Nomad (BSL 1.1); K8ssandra (Kubernetes prohibited); AxonOps (commercial) |
 | OSS-only, on-prem, >100 nodes, BSL approved | **Architecture B + Nomad** scheduler layer | AxonOps (commercial); K8ssandra (Kubernetes prohibited) |
 | OSS-only, on-prem, Ceph already deployed | **Architecture B + Ceph RGW** instead of SeaweedFS | MinIO (archived + AGPL) |
-| Cloud or managed OK (prior topics) | See `cassandra-bare-metal-no-k8s-container.report.md` | Out of scope for this report |
-| Kubernetes allowed | See `cassandra-bare-metal-container-required.report.md` (K8ssandra) | Kubernetes prohibited in this context |
+| Cloud or managed OK (prior topics) | See `20260526-cassandra-bare-metal-no-k8s-container.report.md` | Out of scope for this report |
+| Kubernetes allowed | See `20260526-cassandra-bare-metal-container-required.report.md` (K8ssandra) | Kubernetes prohibited in this context |
 
 ---
 
@@ -398,6 +398,6 @@ Use `performance` governor, not `schedutil`. `schedutil` scales clock speed base
 - [MinIO Repo Archived 2026](../resources/minio/minio-repo-archived-2026.summary.md)
 - [MinIO CE Dead 2026 Alternatives](../resources/minio/minio-ce-dead-2026-alternatives.summary.md)
 - [MinIO AGPL License Analysis](../resources/minio/minio-agpl-license-analysis.summary.md)
-- Prior report: [cassandra-bare-metal-no-k8s-container.report.md](cassandra-bare-metal-no-k8s-container.report.md)
-- Prior report: [cassandra-bare-metal-container-required.report.md](cassandra-bare-metal-container-required.report.md)
-- Prior report: [cassandra-bare-metal-nomad-stack.report.md](cassandra-bare-metal-nomad-stack.report.md)
+- Prior report: [20260526-cassandra-bare-metal-no-k8s-container.report.md](20260526-cassandra-bare-metal-no-k8s-container.report.md)
+- Prior report: [20260526-cassandra-bare-metal-container-required.report.md](20260526-cassandra-bare-metal-container-required.report.md)
+- Prior report: [20260526-cassandra-bare-metal-nomad-stack.report.md](20260526-cassandra-bare-metal-nomad-stack.report.md)

@@ -252,8 +252,8 @@ Register each cluster's port allocation in Consul KV at `cassandra/ports/<hostna
 
 ## References
 
-- [Prior report: Cassandra Bare-Metal Nomad Stack (Topic 1)](cassandra-bare-metal-nomad-stack.report.md)
-- [Prior report: Cassandra Bare-Metal Container-Required (Topic 2, K8s allowed)](cassandra-bare-metal-container-required.report.md)
+- [Prior report: Cassandra Bare-Metal Nomad Stack (Topic 1)](20260526-cassandra-bare-metal-nomad-stack.report.md)
+- [Prior report: Cassandra Bare-Metal Container-Required (Topic 2, K8s allowed)](20260526-cassandra-bare-metal-container-required.report.md)
 - [HashiCorp Nomad job specification — reschedule stanza](https://developer.hashicorp.com/nomad/docs/job-specification/reschedule)
 - [HashiCorp Nomad job specification — restart stanza](https://developer.hashicorp.com/nomad/docs/job-specification/restart)
 - [HashiCorp Nomad node pools (Enterprise)](https://developer.hashicorp.com/nomad/docs/concepts/node-pools)

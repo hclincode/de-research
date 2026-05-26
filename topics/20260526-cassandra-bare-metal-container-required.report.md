@@ -12,7 +12,7 @@ prior-topic: cassandra-bare-metal-nomad-stack
 
 ## Overview
 
-The prior report ([cassandra-bare-metal-nomad-stack](cassandra-bare-metal-nomad-stack.report.md)) concluded that containers are not best practice for Cassandra 5.x on bare metal when the choice is optional. This report addresses the follow-up constraint: **containers are now mandatory**. The question becomes which orchestrator and toolchain deliver the safest, most operationally sound containerized Cassandra deployment across heterogeneous bare-metal clusters.
+The prior report ([cassandra-bare-metal-nomad-stack](20260526-cassandra-bare-metal-nomad-stack.report.md)) concluded that containers are not best practice for Cassandra 5.x on bare metal when the choice is optional. This report addresses the follow-up constraint: **containers are now mandatory**. The question becomes which orchestrator and toolchain deliver the safest, most operationally sound containerized Cassandra deployment across heterogeneous bare-metal clusters.
 
 **Verdict: K8ssandra-operator on Kubernetes (k3s or kubeadm) is the only viable production choice once containers are required.** Nomad is eliminated — it lacks gossip-aware rolling restarts, decommission sequencing, and rack topology enforcement, none of which can be added without building a custom plugin. K8ssandra provides all four load-bearing capabilities natively and is tested at 1000 nodes as of v1.32.0 (April 2026).
 
@@ -119,7 +119,7 @@ The deciding factor is **etcd upgrade safety, not deployment simplicity**. k3s's
 
 ## Host Layer: Non-Negotiables
 
-The host tuning layer from the prior report ([cassandra-bare-metal-nomad-stack](cassandra-bare-metal-nomad-stack.report.md), Host Layer section) applies unchanged: `cassandra-node-tuning` deb with systemd `cassandra-tuning.service` and udev `60-cassandra-io.rules`, disabled `unattended-upgrades`, pinned kernel version, and node-exporter for drift detection.
+The host tuning layer from the prior report ([cassandra-bare-metal-nomad-stack](20260526-cassandra-bare-metal-nomad-stack.report.md), Host Layer section) applies unchanged: `cassandra-node-tuning` deb with systemd `cassandra-tuning.service` and udev `60-cassandra-io.rules`, disabled `unattended-upgrades`, pinned kernel version, and node-exporter for drift detection.
 
 **Additions specific to Kubernetes deployment:**
 - kubelet `--cpu-manager-policy=static` and `--topology-manager-policy=single-numa-node` for Cassandra pods on multi-socket hardware. Cassandra pods must be in the Guaranteed QoS class (requests == limits) for CPU Manager to pin them.
@@ -185,4 +185,4 @@ The host tuning layer from the prior report ([cassandra-bare-metal-nomad-stack](
 - [OpenEBS NDM documentation](https://openebs.io/docs/concepts/ndm)
 - [Cilium kube-proxy replacement](https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/)
 - [MetalLB L2 and BGP modes](https://metallb.universe.tf/concepts/)
-- [Prior report: Cassandra Bare-Metal Nomad Stack](cassandra-bare-metal-nomad-stack.report.md)
+- [Prior report: Cassandra Bare-Metal Nomad Stack](20260526-cassandra-bare-metal-nomad-stack.report.md)
