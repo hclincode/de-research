@@ -16,7 +16,7 @@ resources/
     {resource-title}.summary.md   ← required for every resource (one URL per file)
     {resource-title}.pdf          ← save raw file only for PDFs and code; skip HTML
 topics/
-  {topic-title}.report.md
+  {YYYYMMDD}-{topic-title}.report.md   ← date prefix is the file's last-modified date
 ```
 
 - All file and folder names use **kebab-case**.
