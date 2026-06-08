@@ -1,0 +1,3 @@
+[submodule "references/trino"]
+	path = references/trino
+	url = https://github.com/trinodb/trino.git

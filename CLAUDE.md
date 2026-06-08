@@ -17,11 +17,14 @@ resources/
     {resource-title}.pdf          ← save raw file only for PDFs and code; skip HTML
 topics/
   {YYYYMMDD}-{topic-title}.report.md   ← date prefix is the file's last-modified date
+references/
+  {component}/                         ← cloned/downloaded source code of a component
 ```
 
 - All file and folder names use **kebab-case**.
 - `{component}` is free-form (e.g. `kafka`, `spark`, `dbt`). Create the folder if it does not exist.
 - `{resource-title}` is a short, descriptive, kebab-case name.
+- **`references/` holds source code of components.** Clone or download a component's source repository here (e.g. `references/kafka/`) when you need to inspect actual implementation rather than write about it. Keep `resources/` for summaries and saved artifacts; keep `references/` for code you read.
 - **One URL per summary file.** Do not aggregate multiple sources into one summary — create separate files. Multiple-source summaries make claims untraceable.
 - **Do not save raw HTML files.** Save raw files only for PDFs and code/repos.
 
