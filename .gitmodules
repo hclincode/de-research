@@ -1,3 +1,9 @@
 [submodule "references/trino"]
 	path = references/trino
 	url = https://github.com/trinodb/trino.git
+[submodule "references/iceberg"]
+	path = references/iceberg
+	url = https://github.com/apache/iceberg.git
+[submodule "references/spark"]
+	path = references/spark
+	url = https://github.com/apache/spark.git
