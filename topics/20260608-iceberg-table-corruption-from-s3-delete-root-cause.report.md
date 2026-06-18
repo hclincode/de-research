@@ -245,3 +245,6 @@ specific OpenResty/HAProxy/MinIO consistency behavior is inference until confirm
   [INSERT+commit workflow](20260608-iceberg-insert-commit-workflow.report.md),
   [Trino delete report](20260608-trino-iceberg-insert-s3-delete-conditions.report.md),
   [Spark delete report](20260608-spark-iceberg-insert-merge-s3-delete-conditions.report.md)
+- Follow-up: [single-client phantom delete on active/standby MinIO](20260618-minio-active-standby-phantom-delete-of-successful-upload.report.md)
+  — Root Cause #1 (non-consistent/non-idempotent storage path) demonstrated in isolation: a successfully
+  uploaded object is deleted by the bidirectional replication plane with no engine cleanup involved.
